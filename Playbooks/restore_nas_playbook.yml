@@ -1,0 +1,16 @@
+---
+- name: Restore NAS Mounts Based on IP Range
+  hosts: localhost
+  become: yes
+  vars:
+    local_network_ip_prefix: "{{ local_network_ip_prefix }}"
+    nas_ip: "{{ nas_ip }}"
+    share_name: "{{ share_name }}"
+    mount_point: "{{ mount_point }}"
+    mount_type: "{{ mount_type }}"
+    script_path: "{{ script_path }}"
+    service_name: "{{ service_name }}"
+    network_dispatcher_script: "{{ network_dispatcher_script }}"
+
+  roles:
+    - ansible-role-mount-nas-depending-on-ip-range
