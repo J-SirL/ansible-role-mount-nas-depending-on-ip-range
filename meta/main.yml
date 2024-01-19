@@ -1,0 +1,28 @@
+---
+galaxy_info:
+  role_name: mount_nas_depending_on_ip_range
+  namespace: jsirl
+  author: Johan Sörell
+  description: |
+    The `mount_nas_depending_on_ip_range` is an Ansible role designed to simplify the setup
+    of a Network Attached Storage (NAS) mount script as a Systemd service triggered by network
+    changes, with configuration depending on IP address ranges. This role automates the
+    configuration of the NAS mount script, Systemd service, and NetworkManager dispatcher script,
+    allowing you to mount NAS shares based on specific IP address ranges, enhancing security and flexibility. 
+  license: GPL-3.0
+  min_ansible_version: "2.9"
+  platforms:
+    - name: EL
+      versions:
+        - "8"
+        - "9"
+    - name: Fedora
+      versions:
+        - all
+  galaxy_tags:
+    - linux
+    - system
+    - kickstart
+    - iso
+    - AlmaLinux
+dependencies: []
