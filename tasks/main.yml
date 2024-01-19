@@ -1,0 +1,23 @@
+# tasks/main.yml
+- name: Upload NAS mount script
+  ansible.builtin.template:
+    src: mount_nas_check_type.sh.j2
+    dest: "{{ script_path }}"
+    mode: '0755'
+
+- name: Create a systemd service file for the script
+  ansible.builtin.template:
+    src: nas_mount_service.j2
+    dest: "/etc/systemd/system/{{ service_name }}.service"
+    mode: '0644'
+  notify:
+    - Reload systemd
+    - Start nas_mount service
+
+- name: Create NetworkManager dispatcher script to trigger the service
+  ansible.builtin.template:
+    src: network_dispatcher_script.j2
+    dest: "{{ network_dispatcher_script }}"
+    mode: '0755'
+  notify:
+    - Reload NetworkManager

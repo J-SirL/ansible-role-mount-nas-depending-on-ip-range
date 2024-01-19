@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Your local network IP range, e.g., 192.168.1.
+LOCAL_IP_PREFIX="{{ local_network_ip_prefix }}"
+
+# NAS details
+NAS_IP="{{ nas_ip }}"
+SHARE_NAME="{{ share_name }}"
+MOUNT_POINT="{{ mount_point }}"
+MOUNT_TYPE="{{ mount_type }}"
+
+# Get the current IP address
+CURRENT_IP=$(hostname -I | awk '{print $1}')
+
+# Check if the current IP starts with the local IP prefix
+if [[ $CURRENT_IP == $LOCAL_IP_PREFIX* ]]; then
+    echo "On local network. Mounting NAS..."
+    if [[ "$MOUNT_TYPE" == "cifs" ]]; then
+        sudo mount -t cifs //$NAS_IP/$SHARE_NAME $MOUNT_POINT
+    elif [[ "$MOUNT_TYPE" == "nfs" ]]; then
+        sudo mount -t nfs $NAS_IP:/$SHARE_NAME $MOUNT_POINT
+    else
+        echo "Unsupported mount type: $MOUNT_TYPE"
+    fi
+else
+    echo "Not on local network. NAS will not be mounted."
+fi

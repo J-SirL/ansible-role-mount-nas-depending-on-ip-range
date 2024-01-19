@@ -1,0 +1,11 @@
+[Unit]
+Description=NAS Mount Service
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart={{ script_path }}
+# Add any other service options you need here
+
+[Install]
+WantedBy=multi-user.target
