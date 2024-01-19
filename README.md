@@ -1,6 +1,3 @@
-Certainly! Here's the updated role description with a Table of Contents (TOC) and the requested changes for a different network IP prefix, NAS IP address, and NAS share name:
-
-```markdown
 # Role: `mount_nas_depending_on_ip_range`
 
 ## Table of Contents
