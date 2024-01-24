@@ -1,16 +1,22 @@
 # Role: `mount_nas_depending_on_ip_range`
 
+The Table of Contents (TOC) for the provided markdown document can be updated to include all the relevant sections. Here's the updated TOC:
+
 ## Table of Contents
 
-- [Role Name](#role-name-mount_nas_depending_on_ip_range)
-- [Author](#author-johan-sörell)
+- [Role: `mount_nas_depending_on_ip_range`](#role-mount_nas_depending_on_ip_range)
+- [Table of Contents](#table-of-contents)
+- [Author: Johan Sörell](#author-johan-sörell)
 - [Role Description](#role-description)
 - [Features](#features)
 - [Usage](#usage)
-  - [Clone the Git Repository](#1-clone-the-git-repository)
-  - [Include the Role in Your Ansible Playbook](#2-include-the-role-in-your-ansible-playbook)
-  - [Configure Variables](#3-configure-variables)
-  - [Execute the Ansible Playbook](#4-execute-the-ansible-playbook)
+  - [1. Clone the Git Repository](#1-clone-the-git-repository)
+  - [2. Include the Role in Your Ansible Playbook](#2-include-the-role-in-your-ansible-playbook)
+  - [3. Configure Variables](#3-configure-variables)
+  - [4. Execute the Ansible Playbook](#4-execute-the-ansible-playbook)
+  - [5. If you are using this with my role file_change_monitor_and_Action](#5-if-you-are-using-this-with-my-role-file_change_monitor_and_action)
+- [Author Bio](#author-bio)
+
 
 ## Author: Johan Sörell
 
@@ -76,6 +82,29 @@ Execute your Ansible playbook to set up the NAS mount script and related compone
 
 ```shell
 ansible-playbook configure_nas_mount.yml
+```
+
+### 5. If you are using this with my role file_change_monitor_and_Action
+This is the playbook that it uses to restore the NAS mounts
+It downloads this repo and runs this playbook that are located in this repository
+```yaml
+---
+# Playbooks/restore_nas_playbook.yml
+- name: Restore NAS Mounts Based on IP Range
+  hosts: localhost
+  become: yes
+  vars:
+    local_network_ip_prefix: "{{ local_network_ip_prefix }}"
+    nas_ip: "{{ nas_ip }}"
+    share_name: "{{ share_name }}"
+    mount_point: "{{ mount_point }}"
+    mount_type: "{{ mount_type }}"
+    script_path: "{{ script_path }}"
+    service_name: "{{ service_name }}"
+    network_dispatcher_script: "{{ network_dispatcher_script }}"
+
+  roles:
+    - jsirl.mount_nas_depending_on_ip_range
 ```
 
 This role is suitable for users who want to automate the setup of NAS mounts on their local system while customizing the mount configuration based on specific IP address ranges. It simplifies the process of configuring and managing NAS mounts, enhancing security and flexibility in your infrastructure.
