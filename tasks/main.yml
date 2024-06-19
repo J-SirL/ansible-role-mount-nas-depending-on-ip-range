@@ -1,4 +1,16 @@
 # tasks/main.yml
+- name: Find existing NetworkManager dispatcher scripts
+  ansible.builtin.find:
+    paths: /etc/NetworkManager/dispatcher.d/
+    patterns: '99-trigger-nas-mount*'
+  register: found_dispatcher_scripts
+
+- name: Remove found NetworkManager dispatcher scripts
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: absent
+  loop: "{{ found_dispatcher_scripts.files }}"
+  when: found_dispatcher_scripts.matched > 0
 
 - name: Remove existing NAS mount script
   ansible.builtin.file:
@@ -10,10 +22,10 @@
     path: "/etc/systemd/system/{{ service_name }}.service"
     state: absent
 
-- name: Remove existing NetworkManager dispatcher script
-  ansible.builtin.file:
-    path: "{{ network_dispatcher_script }}"
-    state: absent
+#- name: Remove existing NetworkManager dispatcher script
+#  ansible.builtin.file:
+#    path: "{{ network_dispatcher_script }}"
+#    state: absent
 
 - name: Reload systemd to apply changes
   ansible.builtin.systemd:
