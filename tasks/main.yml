@@ -24,15 +24,6 @@
     state: stopped
   failed_when: false
   ignore_errors: true
-# removed due to bad coding- name: Remove existing systemd service file
-# removed due to bad coding  ansible.builtin.file:
-# removed due to bad coding    path: "/etc/systemd/system/{{ service_name }}.service"
-# removed due to bad coding    state: absent
-
-#- name: Remove existing NetworkManager dispatcher script
-#  ansible.builtin.file:
-#    path: "{{ network_dispatcher_script }}"
-#    state: absent
 
 - name: Reload systemd to apply changes
   ansible.builtin.systemd:
@@ -64,3 +55,44 @@
     mode: '0755'
   notify:
     - Reload NetworkManager
+
+# Adding status checks
+
+- name: Check if NAS mount script exists
+  ansible.builtin.stat:
+    path: "{{ script_path }}"
+  register: nas_mount_script_status
+
+- name: Debug NAS mount script status
+  ansible.builtin.debug:
+    msg: "NAS mount script exists: {{ nas_mount_script_status.stat.exists }}"
+
+- name: Check if systemd service file exists
+  ansible.builtin.stat:
+    path: "/etc/systemd/system/{{ service_name }}.service"
+  register: nas_mount_service_status
+
+- name: Debug systemd service file status
+  ansible.builtin.debug:
+    msg: "Systemd service file exists: {{ nas_mount_service_status.stat.exists }}"
+
+- name: Check if NAS mount service is active
+  ansible.builtin.systemd:
+    name: "{{ service_name }}"
+    state: started
+  register: nas_mount_service_check
+  failed_when: false
+  ignore_errors: true
+
+- name: Debug NAS mount service status
+  ansible.builtin.debug:
+    msg: "NAS mount service is active: {{ nas_mount_service_check.status.ActiveState == 'active' }}"
+
+- name: Check if NetworkManager dispatcher script exists
+  ansible.builtin.stat:
+    path: "{{ network_dispatcher_script }}"
+  register: network_dispatcher_script_status
+
+- name: Debug NetworkManager dispatcher script status
+  ansible.builtin.debug:
+    msg: "NetworkManager dispatcher script exists: {{ network_dispatcher_script_status.stat.exists }}"
