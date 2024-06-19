@@ -10,6 +10,7 @@ SCRIPT="{{ script_path }}"
 
 # Check if the network interface is up
 if [ "$STATUS" = "up" ]; then
+    echo "Network is up, executing script" >> /var/log/nas_mount.log
     # Execute the script_path
     bash $SCRIPT
 fi
