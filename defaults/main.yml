@@ -1,6 +1,6 @@
 # defaults/main.yml
 local_network_ip_prefix: "192.168.48"
-nas_ip: "192.168.48.110"
+nas_ip: "192.168.68.51"
 share_name: "/BackupShare"
 mount_point: "/mnt/BackupShare"
 mount_type: "nfs" # or "cifs"
