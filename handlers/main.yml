@@ -1,14 +1,15 @@
 # handlers/main.yml
 - name: Reload systemd
   ansible.builtin.systemd:
-    daemon_reload: true
+    daemon_reload: yes
 
 - name: Start nas_mount service
   ansible.builtin.service:
     name: "{{ service_name }}"
     state: started
+    enabled: yes
 
 - name: Reload NetworkManager
   ansible.builtin.service:
     name: NetworkManager
-    state: restarted
+    state: reloaded
