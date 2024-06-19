@@ -9,19 +9,26 @@ SHARE_NAME="{{ share_name }}"
 MOUNT_POINT="{{ mount_point }}"
 MOUNT_TYPE="{{ mount_type }}"
 
+# Log file
+LOG_FILE="/var/log/nas_mount.log"
+
 # Get the current IP address
 CURRENT_IP=$(hostname -I | awk '{print $1}')
 
+# Log the current IP address
+echo "$(date): Current IP address is $CURRENT_IP" >> $LOG_FILE
+
+
 # Check if the current IP starts with the local IP prefix
 if [[ $CURRENT_IP == $LOCAL_IP_PREFIX* ]]; then
-    echo "On local network. Mounting NAS..."
+    echo "$(date): On local network. Mounting NAS..." >> $LOG_FILE
     if [[ "$MOUNT_TYPE" == "cifs" ]]; then
-        sudo mount -t cifs //$NAS_IP/$SHARE_NAME $MOUNT_POINT
+        sudo mount -t cifs //$NAS_IP/$SHARE_NAME $MOUNT_POINT >> $LOG_FILE 2>&1
     elif [[ "$MOUNT_TYPE" == "nfs" ]]; then
-        sudo mount -t nfs $NAS_IP:/$SHARE_NAME $MOUNT_POINT
+        sudo mount -t nfs $NAS_IP:/$SHARE_NAME $MOUNT_POINT >> $LOG_FILE 2>&1
     else
-        echo "Unsupported mount type: $MOUNT_TYPE"
+        echo "$(date): Unsupported mount type: $MOUNT_TYPE" >> $LOG_FILE 2>&1
     fi
 else
-    echo "Not on local network. NAS will not be mounted."
+    echo "$(date): Not on local network. NAS will not be mounted." >> $LOG_FILE
 fi

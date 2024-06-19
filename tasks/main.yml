@@ -1,4 +1,20 @@
 # tasks/main.yml
+
+# Ensure the log directory and file exists
+- name: Ensure /var/log directory exists
+  ansible.builtin.file:
+    path: /var/log
+    state: directory
+    mode: '0755'
+
+- name: Ensure /var/log/nas_mount.log exists and has correct permissions
+  ansible.builtin.file:
+    path: /var/log/nas_mount.log
+    state: touch
+    mode: '0666'
+
+# Remove old script to ensure that there is no faulty settings
+
 - name: Find existing NetworkManager dispatcher scripts
   ansible.builtin.find:
     paths: /etc/NetworkManager/dispatcher.d/
